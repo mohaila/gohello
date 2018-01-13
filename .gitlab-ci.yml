@@ -1,0 +1,28 @@
+variables:
+  USER: mohaila
+  PROJECT: gohello
+  ORG: github.com
+
+before_script:
+  - go version
+  - mkdir -p ~/go/src/${ORG}/${USER}
+  - export GOPATH=~/go
+  - export PATH=$PATH:$GOPATH/bin
+  - go get github.com/onsi/ginkgo/ginkgo
+  - go get github.com/onsi/gomega/...
+  - ln -sf ~/${CI_PROJECT_DIR} ~/go/src/${ORG}/${USER}/
+  - cd ~/go/src/${ORG}/${USER}/${CI_PROJECT_NAME}
+
+stages:
+  - build
+  - test
+
+gobuild:
+  stage: build
+  script:
+    - go build
+
+gotest:
+  stage: test
+  script:
+    - ginkgo  
